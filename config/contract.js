@@ -5,7 +5,7 @@ const CONTRACT_ABI = [
   "event Withdrawn(address indexed user, uint256 amount)",
   "function deposit(uint256 _lockTime) external payable",
   "function withdraw() external",
-  "function getDeposit(address _user) external view returns (uint256 amount, uint256 unlockTime)"
+  "function getDeposit(address _user) external view returns (tuple(uint256 amount, uint256 unlockTime))"
 ];
 
 export { CONTRACT_ADDRESS, CONTRACT_ABI }; 
