@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# PiggyBank Smart Contract Deployment & Frontend Integration
+
+## Overview
+Welcome to the PiggyBank project! This repository contains a Solidity smart contract that allows users to deposit ETH with a specified lock time and withdraw it once the lock period has expired. The project includes a Next.js frontend that interacts with the smart contract, enabling users to deposit, withdraw, and check their balances seamlessly.
+
+## Features
+- **Deposit ETH**: Users can deposit ETH with a customizable lock time.
+- **Withdraw ETH**: Users can withdraw their funds once the lock time has expired.
+- **View Deposit Details**: Users can check their deposit amount and unlock time.
+- **Responsive Design**: Built with TailwindCSS for a modern and responsive user interface.
+- **Web3 Integration**: Connects with MetaMask for easy wallet interactions.
 
 ## Getting Started
 
-First, run the development server:
+### 1️⃣ Hardhat Deployment Setup
+- Use `hardhat.config.js` to connect to the Sepolia Testnet via Alchemy.
+- Store sensitive information such as the Alchemy API key and wallet private key in a `.env` file.
+- Compile and deploy the smart contract to Sepolia.
+- Log the deployed contract address for future reference.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Smart Contract Verification
+- Verify the contract on Sepolia Etherscan using Hardhat plugins.
+- Ensure the contract is publicly viewable for transparency.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Next.js Frontend
+- Create a React app using Next.js.
+- Utilize `ethers.js` to interact with the smart contract.
+- Implement the following functions:
+  - **Deposit ETH**: Allow users to set a lock time for their deposits.
+  - **Withdraw ETH**: Ensure users can only withdraw after the unlock time.
+  - **View Deposit Details**: Display the amount deposited and the unlock time.
+- Style the application using TailwindCSS for a sleek look.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Web3 Integration
+- Enable MetaMask connection for user authentication.
+- Fetch and display the user's wallet balance.
+- Provide real-time updates on contract interactions.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Testing & Optimization
+- Use Sepolia ETH from a faucet for testing purposes.
+- Handle edge cases such as zero deposits and early withdrawals.
+- Optimize gas usage for efficient transactions.
 
-## Learn More
+## Next Steps
+1. Deploy the smart contract and confirm its address on Sepolia.
+2. Generate a user-friendly Next.js UI to interact with the contract.
+3. Optimize the application and prepare it for a portfolio showcase.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
