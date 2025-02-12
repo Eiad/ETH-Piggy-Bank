@@ -1,7 +1,7 @@
 'use client'
-import { useWallet } from '../context/WalletContext'
+import { useWallet } from '../../context/WalletContext'
 import { FiInfo } from 'react-icons/fi'
-import PiggyInterface from '../components/PiggyInterface'
+import PiggyInterface from '../../components/PiggyInterface'
 
 export default function Home() {
   const { connectWallet, account } = useWallet()
