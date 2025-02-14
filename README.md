@@ -1,14 +1,17 @@
-# PiggyBank Smart Contract Deployment & Frontend Integration
+# 🚀 Welcome to Crypto Piggy Bank! 🌟
+
+## 🌐 Live Demo
+Check out our live application at [Crypto Piggy Bank](https://crypto-piggy.vercel.app/)! Experience the future of savings today!
 
 ## Overview
-Welcome to the PiggyBank project! This repository contains a Solidity smart contract that allows users to deposit ETH with a specified lock time and withdraw it once the lock period has expired. The project includes a Next.js frontend that interacts with the smart contract, enabling users to deposit, withdraw, and check their balances seamlessly.
+Welcome to the **Crypto Piggy Bank** project! This innovative application allows users to securely deposit ETH with a customizable lock time, ensuring that your funds remain untouched until you're ready to access them. Built on the Ethereum blockchain, this project combines the power of smart contracts with a sleek, user-friendly interface.
 
 ## Features
-- **Deposit ETH**: Users can deposit ETH with a customizable lock time.
-- **Withdraw ETH**: Users can withdraw their funds once the lock time has expired.
-- **View Deposit Details**: Users can check their deposit amount and unlock time.
-- **Responsive Design**: Built with TailwindCSS for a modern and responsive user interface.
-- **Web3 Integration**: Connects with MetaMask for easy wallet interactions.
+- **Time-Locked Savings**: Deposit ETH and set a lock duration to keep your savings secure.
+- **Withdraw with Confidence**: Access your funds only after the specified unlock time has passed.
+- **View Deposit Details**: Easily check your deposit amount and unlock time.
+- **Responsive Design**: Enjoy a modern and responsive user interface built with TailwindCSS.
+- **Web3 Integration**: Seamlessly connect with MetaMask for effortless wallet interactions.
 
 ## Getting Started
 
