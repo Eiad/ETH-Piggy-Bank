@@ -50,4 +50,4 @@ Welcome to the **Crypto Piggy Bank** project! This innovative application allows
 3. Optimize the application and prepare it for a portfolio showcase.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. You can view the license details in the [License tab](https://github.com/Eiad/ETH-Piggy-Bank?tab=License-1-ov-file) on the GitHub page.
