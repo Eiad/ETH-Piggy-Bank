@@ -1,4 +1,4 @@
-# 🚀 Welcome to Crypto Piggy Bank! 🌟
+# 🚀 Welcome to Crypto Piggy Bank Beta! 🌟
 
 ## 🌐 Live Demo
 Check out our live application at [Crypto Piggy Bank](https://crypto-piggy.vercel.app/)! Experience the future of savings today!
