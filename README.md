@@ -51,3 +51,23 @@ Welcome to the **Crypto Piggy Bank** project! This innovative application allows
 
 ## License
 This project is licensed under the MIT License. You can view the license details in the [License tab](https://github.com/Eiad/ETH-Piggy-Bank?tab=License-1-ov-file) on the GitHub page.
+
+## 🔗 Smart Contract Repository
+
+For those interested in the underlying technology that powers the **Crypto Piggy Bank**, we invite you to explore our smart contract repository: [ETH-Piggy-Bank-contract](https://github.com/Eiad/ETH-Piggy-Bank-contract).
+
+### 🛠️ What's Inside?
+
+The smart contract is the backbone of our application, built using Solidity and deployed on the Ethereum blockchain. Here's a brief overview of its key features:
+
+- **Time-Locked Deposits**: Users can deposit ETH with a customizable lock time, ensuring that their funds remain secure and inaccessible until the specified duration has elapsed. This feature is crucial for promoting disciplined savings.
+
+- **Secure Withdrawals**: The contract enforces strict rules around withdrawals, allowing users to access their funds only after the unlock time has passed. This mechanism is designed to prevent premature withdrawals, safeguarding users' savings.
+
+- **Event Logging**: Every deposit and withdrawal action is logged on the blockchain, providing transparency and traceability. Users can verify their transactions on Etherscan, ensuring complete trust in the system.
+
+- **Gas Efficiency**: The contract is optimized for gas usage, making transactions cost-effective for users. This is particularly important in the Ethereum ecosystem, where gas fees can fluctuate significantly.
+
+- **Robust Error Handling**: The contract includes comprehensive error handling to manage edge cases, such as attempts to withdraw funds before the unlock time or deposits without sending ETH.
+
+By leveraging the power of smart contracts, the **Crypto Piggy Bank** not only offers a user-friendly interface but also ensures that your savings are managed securely and transparently. Dive into the code and see how we've harnessed blockchain technology to revolutionize the way you save!
