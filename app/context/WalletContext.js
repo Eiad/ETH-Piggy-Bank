@@ -28,15 +28,16 @@ export function WalletProvider({ children }) {
       const pastTransactions = events.map(event => ({
         hash: event.transactionHash,
         type: 'deposit',
-        amount: ethers.formatEther(event.args[1]), // amount
-        timestamp: new Date(Number(event.args[2]) * 1000).toISOString(), // unlockTime
+        amount: ethers.formatEther(event.args[1]),
+        timestamp: new Date(Number(event.args[2]) * 1000).toISOString(),
         status: 'confirmed',
         blockNumber: event.blockNumber
       }))
       
-      setTransactions(prev => [...pastTransactions, ...prev.filter(t => 
-        !pastTransactions.some(pt => pt.hash === t.hash)
-      )])
+      setTransactions(prev => [
+        ...pastTransactions,
+        ...prev.filter(t => !pastTransactions.some(pt => pt.hash === t.hash))
+      ])
     } catch (error) {
       console.error('Error fetching past transactions:', error)
     }
@@ -62,40 +63,45 @@ export function WalletProvider({ children }) {
 
   const getDeposit = async (userAddress) => {
     if (!userAddress) return;
-
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
       
-      console.log(`Fetching deposit for address: ${userAddress}`);
+      console.log('Fetching deposit for address:', userAddress);
+      
       const result = await contract.getDeposit(userAddress);
+      console.log('Raw contract response:', result);
       
-      console.log('Raw deposit result:', result);
+      if (!result || result === '0x') {
+        console.log('No deposit found for address:', userAddress);
+        setDeposit({ amount: '0', unlockTime: '0' });
+        return;
+      }
       
-      // Handle both tuple and array responses
       const amount = result.amount || result[0];
       const unlockTime = result.unlockTime || result[1];
       
-      console.log('Parsed values:', {
-        amount: amount.toString(),
-        unlockTime: unlockTime.toString()
-      });
+      if (amount == 0 || amount === 0n) {
+        console.log('No deposit found for address:', userAddress);
+        setDeposit({ amount: '0', unlockTime: '0' });
+        return;
+      }
       
       setDeposit({
         amount: ethers.formatEther(amount),
-        unlockTime: new Date(Number(unlockTime) * 1000).toLocaleString()
+        unlockTime: Number(unlockTime) === 0 
+          ? '0' 
+          : new Date(Number(unlockTime) * 1000).toLocaleString()
       });
       setLastFetchedAddress(userAddress);
       
     } catch (error) {
-      console.error('Error fetching deposit:', error);
-      // Don't show error toast for empty deposits
       if (error.code === 'BAD_DATA') {
-        console.log('No deposit found for address');
-        setDeposit({ amount: '0', unlockTime: '0' });
+        console.log('No deposit found for address:', userAddress);
       } else {
-        toast.error('Error fetching deposit details');
+        console.error('Error fetching deposit:', error);
       }
+      setDeposit({ amount: '0', unlockTime: '0' });
     }
   };
 
@@ -113,7 +119,7 @@ export function WalletProvider({ children }) {
         { value: ethers.parseEther(depositAmount) }
       )
       
-      // Add transaction to history immediately
+      // Add transaction to history immediately as "unfinalized"
       setTransactions(prev => [{
         hash: tx.hash,
         type: 'deposit',
@@ -121,7 +127,7 @@ export function WalletProvider({ children }) {
         timestamp: new Date().toISOString(),
         status: 'unfinalized'
       }, ...prev])
-
+      
       const receipt = await tx.wait()
       
       // Update transaction status after confirmation
@@ -134,10 +140,11 @@ export function WalletProvider({ children }) {
             } 
           : t
       ))
-
-      // Force an immediate deposit check
+      
+      // Refresh the deposit state & history after confirmation
       await getDeposit(account)
-
+      await fetchPastTransactions(account)
+      
       toast.success(`Successfully deposited ${depositAmount} ETH`)
     } catch (error) {
       console.error('Error depositing:', error)
@@ -197,28 +204,80 @@ export function WalletProvider({ children }) {
 
   const checkContractDeposit = async (userAddress) => {
     try {
-      const provider = new ethers.BrowserProvider(window.ethereum)
-      const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider)
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
       
-      console.log('Checking contract deposit for:', userAddress)
-      const result = await contract.getDeposit(userAddress)
+      console.log('Checking deposit for address:', userAddress);
       
-      console.log('Raw contract deposit:', {
-        amount: result[0].toString(),
-        unlockTime: result[1].toString(),
-        formattedAmount: ethers.formatEther(result[0]),
-        formattedTime: new Date(Number(result[1]) * 1000).toLocaleString()
-      })
+      const result = await contract.getDeposit(userAddress);
+      console.log('Raw contract response:', result);
+      
+      if (!result || result === '0x') {
+        console.log('No deposit found for address:', userAddress);
+        return { amount: '0', unlockTime: '0' };
+      }
+      
+      const amount = result.amount || result[0];
+      const unlockTime = result.unlockTime || result[1];
+      
+      if (amount == 0 || amount === 0n) {
+        console.log('No deposit found for address:', userAddress);
+        return { amount: '0', unlockTime: '0' };
+      }
       
       return {
-        amount: ethers.formatEther(result[0]),
-        unlockTime: new Date(Number(result[1]) * 1000).toLocaleString()
-      }
+        amount: ethers.formatEther(amount),
+        unlockTime: Number(unlockTime) === 0 
+          ? '0' 
+          : new Date(Number(unlockTime) * 1000).toLocaleString()
+      };
+      
     } catch (error) {
-      console.error('Error checking contract deposit:', error)
-      return null
+      if (error.code === 'BAD_DATA') {
+        console.log('No deposit found for address:', userAddress);
+      } else {
+        console.error('Error checking deposit:', error);
+      }
+      return { amount: '0', unlockTime: '0' };
     }
-  }
+  };
+
+  const listenToDepositEvents = async () => {
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
+      
+      const depositListener = (user, amount, unlockTime, event) => {
+        console.log('Deposit event received:', {
+          user,
+          amount: ethers.formatEther(amount),
+          unlockTime: new Date(Number(unlockTime) * 1000).toLocaleString(),
+          txHash: event.transactionHash,
+        });
+        
+        if (account && user.toLowerCase() === account.toLowerCase()) {
+          // Refresh the deposit state
+          getDeposit(account);
+          // Synchronize transaction history with this event if not already present
+          setTransactions(prev => {
+            if (prev.some(tx => tx.hash === event.transactionHash)) return prev;
+            return [{
+              hash: event.transactionHash,
+              type: 'deposit',
+              amount: ethers.formatEther(amount),
+              timestamp: new Date().toISOString(),
+              status: 'confirmed',
+              blockNumber: event.blockNumber
+            }, ...prev];
+          });
+        }
+      };
+      
+      contract.on('Deposited', depositListener);
+    } catch (error) {
+      console.error('Error setting up deposit event listener:', error);
+    }
+  };
 
   useEffect(() => {
     checkConnection()
@@ -252,6 +311,18 @@ export function WalletProvider({ children }) {
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (account) {
+      listenToDepositEvents();
+    }
+    
+    return () => {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
+      contract.removeAllListeners('Deposited');
+    };
+  }, [account]);
 
   return (
     <WalletContext.Provider value={{
