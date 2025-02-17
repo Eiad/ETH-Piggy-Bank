@@ -26,8 +26,26 @@ export default function PiggyBank() {
             Secure your ETH with time-locked savings. Set a duration, deposit your funds, and ensure they remain untouched until the specified time.
           </p>
         </header>
-        
+
+
         {!account ? <ConnectWallet /> : <PiggyInterface />}
+        {/* Add Disclaimer */}
+        <div className="max-w-3xl mx-auto px-6 py-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border border-yellow-200 dark:border-yellow-700/30">
+          <div className="text-center space-y-2">
+            <p className="text-yellow-800 dark:text-yellow-200 font-semibold">⚠️ Important Notice</p>
+            <p className="text-sm text-yellow-700 dark:text-yellow-300">
+              Before proceeding with any transactions, please be aware that:
+            </p>
+            <ul className="text-sm text-yellow-600 dark:text-yellow-400 space-y-1">
+              <li>• This is a beta version and may contain undiscovered issues</li>
+              <li>• You are using this application at your own risk so test with small amounts</li>
+              <li>• We are not liable for any losses or damages</li>
+              <li>• Ensure you understand the lock period before depositing</li>
+              <li>• Double-check all transaction details before confirming</li>
+            </ul>
+          </div>
+        </div>
+                
       </div>
     </main>
   )

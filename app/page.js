@@ -20,6 +20,21 @@ export default function Home() {
           </p>
         </header>
 
+        <div className="max-w-3xl mx-auto px-6 py-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border border-yellow-200 dark:border-yellow-700/30">
+          <div className="text-center space-y-2">
+            <p className="text-yellow-800 dark:text-yellow-200 font-semibold">⚠️ Beta Application Notice</p>
+            <p className="text-sm text-yellow-700 dark:text-yellow-300">
+              This is a beta version of Crypto Piggy Bank. By using this application, you acknowledge that:
+            </p>
+            <ul className="text-sm text-yellow-600 dark:text-yellow-400 space-y-1">
+              <li>• This is an experimental application in beta testing phase</li>
+              <li>• You are responsible for any risks associated with using the application</li>
+              <li>• We hold no liability for any loss of funds or damages</li>
+              <li>• Always verify transactions and use at your own discretion</li>
+            </ul>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <div className="card glass-card overflow-hidden" style={{ animationDelay: '0.2s' }}>
             <div className="text-center p-8 space-y-3">
